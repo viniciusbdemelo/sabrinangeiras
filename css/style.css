@@ -1,0 +1,1567 @@
+/* ==========================================================================
+   Site de Sabrina — estilos globais
+   Design baseado nas Apple Human Interface Guidelines (Foundations:
+   Color, Typography, Accessibility, Layout, Motion).
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Fonte: Inter Tight (versões variáveis — um arquivo cobre todos os pesos)
+   -------------------------------------------------------------------------- */
+@font-face {
+  font-family: "Inter Tight";
+  src: url("../fonts/InterTight-VariableFont_wght.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter Tight";
+  src: url("../fonts/InterTight-Italic-VariableFont_wght.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* --------------------------------------------------------------------------
+   Tokens de design
+   -------------------------------------------------------------------------- */
+:root {
+  /* Cores
+     Contraste medido sobre --color-bg (#E5E0DA):
+     --color-text           13,1:1  (meta HIG para texto pequeno: 7:1)
+     --color-text-secondary  5,5:1  (mínimo HIG até 17px: 4,5:1)        */
+  --color-bg: #E5E0DA;
+  --color-text: #1D1B19;
+  --color-text-secondary: #5C5650;
+  --color-separator: rgba(29, 27, 25, 0.12);
+
+  /* Paleta da marca — contrastes medidos (mínimos HIG: 4,5:1 texto até
+     17px; 3:1 texto ≥18px ou negrito):
+     --color-ink       sobre --color-surface   5,86:1
+     --color-ink       sobre --color-button    6,64:1
+     --color-gold      sobre --color-surface   3,05:1  só texto ≥18px
+     --color-gold-text sobre --color-surface   4,62:1
+     --color-gold-text sobre --color-bg        4,2:1   só texto ≥18px
+     --color-muted     sobre --color-button    4,56:1
+     Originais do Figma, abaixo do mínimo: gold #B2A386, muted #C8C0AE. */
+  --color-surface: #EDEBE7;
+  --color-card: var(--color-surface); /* cards de conteúdo */
+  --color-button: #FAF9F9;
+  --color-button-border: #FFFFFF;
+  --color-ink: #5E594C;
+  --color-gold: #97845F;
+  --color-gold-text: #76674C; /* dourado para texto pequeno e sobre cards */
+  --color-sand: #D4C7AD;
+  --color-muted: #7E7155;
+  --color-white: #FFFFFF;
+  --color-header-bg: rgb(229 224 218 / 0.6); /* --color-bg translúcido */
+  --color-header-border: rgb(255 255 255 / 0.5);
+  --header-material: saturate(160%) blur(10px); /* desfoque leve: o fundo aparece */
+  --color-track: rgb(94 89 76 / 0.15);       /* --color-ink translúcido */
+  --color-fill-selected: rgb(29 27 25 / 0.08); /* fundo do item selecionado */
+
+  /* Degradês */
+  --gradient-photo: linear-gradient(180deg,
+    rgba(60, 50, 15, 0) 53.78%,
+    rgba(60, 50, 15, 0.75) 100%);
+  /* Vídeo: Figma 0 → 36% só na faixa do título; reforçado para o título
+     branco atingir 3:1 (HIG, texto grande) nos quadros claros (≥3,5:1). */
+  --gradient-video: linear-gradient(180deg, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, 0.6) 100%);
+  --gradient-video-compact: linear-gradient(180deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.7) 100%);
+
+  /* Tipografia — estilos de texto do iOS (HIG, tamanho Large padrão).
+     Tamanhos em rem para respeitar o zoom/tamanho de fonte do usuário;
+     entrelinhas = altura de linha HIG ÷ tamanho. Mínimo de 11px. */
+  --font-family: "Inter Tight", -apple-system, BlinkMacSystemFont,
+                 "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+
+  --text-caption: 0.75rem;     /* 12px  Caption 1 */
+  --text-footnote: 0.8125rem;  /* 13px  Footnote */
+  --text-subhead: 0.9375rem;   /* 15px  Subheadline */
+  --text-callout: 1rem;        /* 16px  Callout */
+  --text-body: 1.0625rem;      /* 17px  Body */
+  --text-title-3: 1.25rem;     /* 20px  Title 3 */
+  --text-title-2: 1.375rem;    /* 22px  Title 2 */
+  --text-large-title: 2.125rem;/* 34px  Large Title */
+
+  --leading-footnote: 1.385;    /* 18/13 */
+  --leading-subhead: 1.333;     /* 20/15 */
+  --leading-callout: 1.3125;    /* 21/16 */
+  --leading-body: 1.294;        /* 22/17 */
+  --leading-title-3: 1.25;      /* 25/20 */
+  --leading-title-2: 1.273;     /* 28/22 */
+  --leading-large-title: 1.206; /* 41/34 */
+  --leading-loose: 1.45;        /* HIG: entrelinha maior em colunas largas */
+
+  /* Tamanhos por função */
+  --text-button: 1rem;                          /* 16px */
+  --text-video-title: clamp(2rem, 4.5vw, 3rem); /* 32px → 48px */
+  --text-video-title-sm: 1.75rem;               /* 28px */
+
+  /* Primeira seção: medidas em em, relativas a uma única escala que
+     acompanha a altura da tela (16px = tamanho de referência do Figma).
+     Mínimo de 11,25px para o menor texto não ficar abaixo de 11px (HIG). */
+  --hero-scale: clamp(11.25px, 1.45vh, 16px);
+  --hero-scale: clamp(11.25px, 1.45dvh, 16px);
+  --hero-title: 2.25em;          /* 36px na referência */
+  --hero-lead: 1.25em;           /* 20px */
+  --hero-button: 1.125em;        /* 18px */
+  --hero-photo: 21.5em;          /* 344px */
+  --hero-name: 13.75em;          /* 220px */
+  --hero-photo-subtitle: 0.978em;/* 15,65px */
+  --hero-gap: 1.5em;             /* 24px */
+  --hero-gap-sm: 0.75em;         /* 12px — também o padding do card */
+  /* Concentricidade (HIG): raio da base do card = raio do botão-pílula
+     (metade de 2,75em) + padding (0,75em). As curvas ficam paralelas. */
+  --hero-radius-bottom: 2.125em;
+
+  /* Pesos: HIG recomenda evitar Ultralight, Thin e Light */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+
+  /* Espaçamento (grade de 4px) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+
+  /* Layout */
+  /* Largura de conteúdo única para todas as seções (cabeçalho incluso).
+     No celular a margem é 5vw: o conteúdo ocupa 90% da largura. */
+  --content-max: 1080px;
+  --site-min: 320px;      /* abaixo disso a página rola na horizontal */
+  --text-max: 68ch;
+  --gutter: clamp(1rem, 5vw, 2.5rem);
+
+  --header-h: 56px;
+  --header-inset: 4px;    /* distância da barra (ilha) até as bordas da tela */
+  --logo-h: 48px;
+  --section-gap: 1.5rem;  /* 24px entre seções consecutivas */
+
+  /* Área mínima de toque (HIG: 44x44pt) */
+  --tap-min: 44px;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-pill: 999px;
+  --radius-button: 16px;
+  --radius-island: 20px;
+  --radius-island-inner: 14px; /* concêntrico: 20px − (56px − 44px) ÷ 2 */
+  --radius-media: 24px;
+  --radius-media-sm: 20px;
+  --radius-tile: 16px;
+  --card-padding: 1.25rem; /* 20px */
+
+  --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration: 200ms;
+  --reveal-duration: 600ms;
+  --reveal-distance: 24px;
+}
+
+/* Celular: logo do topo menor, para a primeira seção caber em 80% da tela */
+@media (max-width: 600px) {
+  :root {
+    --logo-h: 32px;
+    --hero-rest: 26rem;
+  }
+}
+
+/* Celular baixo (ex.: iPhone SE): o logo do topo sai (o símbolo continua na
+   barra de navegação) e o espaço vai para a foto e para o vídeo aparecer */
+@media (max-width: 600px) and (max-height: 700px) {
+  :root {
+    --logo-h: 0px;
+    --hero-rest: 22.5rem;
+  }
+
+  .hero__logo {
+    display: none;
+  }
+
+  .hero {
+    gap: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Reset e base
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  /* âncoras não ficam escondidas sob a barra flutuante */
+  scroll-padding-top: calc(var(--header-h) + var(--header-inset) + var(--header-inset));
+}
+
+body {
+  min-width: var(--site-min);
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+  font-size: var(--text-body);
+  font-weight: var(--weight-regular);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img,
+picture,
+video,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: var(--weight-semibold);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+p {
+  max-width: var(--text-max);
+  text-wrap: pretty;
+}
+
+/* Sem sublinhado: links se distinguem pelo contexto, peso, fundo ou ícone */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Foco visível para navegação por teclado (HIG: Full Keyboard Access) */
+:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* --------------------------------------------------------------------------
+   Utilitários
+   -------------------------------------------------------------------------- */
+.container {
+  width: 100%;
+  max-width: calc(var(--content-max) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.skip-link {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: 100;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-text);
+  color: var(--color-bg);
+  border-radius: var(--radius-sm);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+/* --------------------------------------------------------------------------
+   Cabeçalho e navegação
+   -------------------------------------------------------------------------- */
+/* Ilha flutuante a 4px das bordas. Na página inicial fica oculta no topo
+   e aparece com a rolagem (JS); também aparece ao receber foco do teclado. */
+.site-header {
+  position: fixed;
+  top: var(--header-inset);
+  left: var(--header-inset);
+  right: var(--header-inset);
+  z-index: 50;
+  background-color: var(--color-header-bg);
+  -webkit-backdrop-filter: var(--header-material);
+  backdrop-filter: var(--header-material);
+  border: 1px solid var(--color-header-border);
+  border-radius: var(--radius-island);
+  transition: opacity var(--duration) var(--ease),
+              transform var(--duration) var(--ease);
+}
+
+.site-header.is-hidden:not(:focus-within) {
+  opacity: 0;
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: var(--header-h);
+  /* desconta a margem da ilha e a borda de 1px: o conteúdo da barra
+     alinha exatamente com o resto da página */
+  --island-offset: calc(var(--header-inset) + 1px);
+  max-width: calc(var(--content-max) + 2 * var(--gutter) - 2 * var(--island-offset));
+  padding-inline: calc(var(--gutter) - var(--island-offset));
+}
+
+.site-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--tap-min);
+  color: var(--color-text);
+  font-size: var(--text-subhead);
+  line-height: var(--leading-subhead);
+}
+
+.site-logo__symbol {
+  flex: none;
+  width: auto;
+  height: 24px;
+  color: var(--color-gold);
+}
+
+.site-logo__name {
+  font-weight: var(--weight-semibold);
+}
+
+.site-logo__separator,
+.site-logo__tagline {
+  color: var(--color-text-secondary);
+  font-weight: var(--weight-regular);
+}
+
+/* Celular: nome e especialidade em duas linhas */
+@media (max-width: 600px) {
+  .site-logo__text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .site-logo__separator {
+    display: none;
+  }
+
+  .site-logo__tagline {
+    font-size: var(--text-caption);
+    line-height: 1.333; /* 16/12 */
+  }
+}
+
+.site-nav__list {
+  display: flex;
+  gap: var(--space-2);
+  padding: 0;
+  list-style: none;
+}
+
+.site-nav__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-min);
+  padding-inline: var(--space-3);
+  color: var(--color-text-secondary);
+  font-size: var(--text-subhead);
+  font-weight: var(--weight-medium);
+  border-radius: var(--radius-island-inner);
+  transition: color var(--duration) var(--ease),
+              background-color var(--duration) var(--ease);
+}
+
+.site-nav__link:hover {
+  color: var(--color-text);
+}
+
+/* Página atual: peso e fundo, não só a cor (HIG) */
+.site-nav__link[aria-current="page"] {
+  color: var(--color-text);
+  font-weight: var(--weight-semibold);
+  background-color: var(--color-fill-selected);
+}
+
+.site-nav__toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--tap-min);
+  height: var(--tap-min);
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.site-nav__toggle-bar {
+  position: relative;
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+}
+
+.site-nav__toggle-bar::before,
+.site-nav__toggle-bar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+  transition: transform var(--duration) var(--ease);
+}
+
+.site-nav__toggle-bar::before { top: -6px; }
+.site-nav__toggle-bar::after  { top: 6px; }
+
+.site-nav__toggle[aria-expanded="true"] .site-nav__toggle-bar {
+  background: transparent;
+}
+
+.site-nav__toggle[aria-expanded="true"] .site-nav__toggle-bar::before {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.site-nav__toggle[aria-expanded="true"] .site-nav__toggle-bar::after {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* Telas estreitas: menu recolhido */
+@media (max-width: 720px) {
+  .site-nav__toggle {
+    display: inline-flex;
+  }
+
+  /* Menu aberto: segunda ilha, com o mesmo material, logo abaixo */
+  .site-nav__list {
+    position: absolute;
+    top: calc(100% + var(--header-inset));
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    padding: var(--space-2) calc(var(--gutter) - var(--header-inset));
+    background-color: var(--color-header-bg);
+    -webkit-backdrop-filter: var(--header-material);
+    backdrop-filter: var(--header-material);
+    border: 1px solid var(--color-header-border);
+    border-radius: var(--radius-island);
+  }
+
+  .js .site-nav__list:not(.is-open) {
+    display: none;
+  }
+
+  .site-nav__link {
+    width: 100%;
+    font-size: var(--text-body);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Seções
+   -------------------------------------------------------------------------- */
+/* Distância entre seções consecutivas: definida só aqui */
+main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-gap);
+  padding-block: var(--section-gap);
+}
+
+/* Páginas sem hero: a barra fica sempre visível, então o conteúdo começa abaixo dela */
+main:not(:has(.hero)) {
+  padding-top: calc(var(--header-h) + var(--header-inset) + var(--section-gap));
+}
+
+/* --------------------------------------------------------------------------
+   Botão
+   -------------------------------------------------------------------------- */
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  min-height: var(--tap-min); /* HIG: 44px (Figma: 36px) */
+  padding: var(--space-2);
+  background-color: var(--color-button);
+  border: 1px solid var(--color-button-border);
+  border-radius: var(--radius-button);
+  color: var(--color-ink);
+  font-size: var(--text-button);
+  font-weight: var(--weight-medium);
+  line-height: 1.2;
+  text-align: center;
+  transition: background-color var(--duration) var(--ease),
+              transform var(--duration) var(--ease);
+}
+
+.button:hover {
+  background-color: var(--color-white);
+}
+
+.button:active {
+  transform: scale(0.98);
+}
+
+.button--muted {
+  color: var(--color-muted);
+}
+
+/* Ação principal: cor no fundo, não no texto (HIG) — branco sobre ink 7:1 */
+.button--primary {
+  background-color: var(--color-ink);
+  border-color: var(--color-ink);
+  color: var(--color-white);
+}
+
+.button--primary:hover {
+  background-color: var(--color-text);
+}
+
+.button__icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* --------------------------------------------------------------------------
+   Ícones — arquivos SVG em icones/, pintados com a cor do texto (currentColor)
+   via máscara. Para trocar um ícone, basta substituir o arquivo mantendo o nome.
+   -------------------------------------------------------------------------- */
+.icon {
+  display: inline-block;
+  flex: none;
+  width: 1em;
+  height: 1em;
+  background-color: currentColor;
+  -webkit-mask: var(--icon) center / contain no-repeat;
+  mask: var(--icon) center / contain no-repeat;
+}
+
+.icon--whatsapp { --icon: url("../icones/whatsapp.svg"); }
+.icon--instagram { --icon: url("../icones/instagram.svg"); }
+.icon--email { --icon: url("../icones/email.svg"); }
+.icon--link-externo { --icon: url("../icones/link-externo.svg"); }
+
+/* --------------------------------------------------------------------------
+   Hero — caixa inicial da página Início
+   Logo + card ocupam até 80% da altura da tela, para o topo do vídeo
+   aparecer logo abaixo. Todas as medidas internas são em em: mudar
+   --hero-scale redimensiona o conjunto inteiro, mantendo a proporção.
+   -------------------------------------------------------------------------- */
+/* largura e margens vêm de .container */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--section-gap);
+}
+
+.hero__logo {
+  width: auto;
+  height: var(--logo-h);
+  color: var(--color-gold);
+}
+
+/* Contêiner de referência: o arco usa a largura dele (cqw) */
+.hero__frame {
+  width: 100%;
+  container: hero / inline-size;
+}
+
+.hero__card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--hero-gap);
+  /* topo da página + logo + espaço + card = 80% da tela */
+  min-height: calc(80vh - var(--section-gap) - var(--logo-h) - var(--section-gap));
+  min-height: calc(80dvh - var(--section-gap) - var(--logo-h) - var(--section-gap));
+  padding: var(--hero-gap-sm);
+  background-color: var(--color-surface);
+  font-size: var(--hero-scale);
+
+  /* Topo em arco: raio = metade da largura, nos dois eixos (semicírculo).
+     O fallback vale para navegadores sem container queries. */
+  border-radius: 300px 300px var(--hero-radius-bottom) var(--hero-radius-bottom);
+  border-radius: 50cqw 50cqw var(--hero-radius-bottom) var(--hero-radius-bottom) / 50cqw 50cqw var(--hero-radius-bottom) var(--hero-radius-bottom);
+}
+
+/* Linha 1 */
+.hero__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--hero-gap);
+  width: 100%;
+}
+
+/* Foto (Figma: 344×344, conteúdo na base, padding vertical de 40px) */
+.hero__photo {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  width: min(var(--hero-photo), 100%);
+  aspect-ratio: 1;
+  padding: 2.5em 0;
+  container-type: inline-size;
+  overflow: hidden;
+  border-radius: 50%;
+  background-color: var(--color-surface);
+}
+
+.hero__photo > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  color: transparent; /* esconde o alt visível se a imagem falhar */
+  transform: scale(1.03); /* esconde a borda escura do recorte circular do JPG */
+}
+
+/* Degradê restrito ao círculo, abaixo do nome */
+.hero__photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--gradient-photo);
+  pointer-events: none;
+}
+
+/* Nome + subtítulo, sem espaço entre eles */
+.hero__name {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--color-white);
+  text-align: center;
+}
+
+.hero__name-title {
+  width: var(--hero-name);
+  max-width: 100%;
+  height: auto;
+}
+
+.hero__name-subtitle {
+  color: var(--color-sand);
+  font-size: var(--hero-photo-subtitle);
+  font-weight: var(--weight-regular);
+  line-height: 1.214; /* 19px na referência */
+  letter-spacing: 0.03em;
+}
+
+.hero__title {
+  max-width: 13.9em; /* 499px na referência */
+  color: var(--color-gold);
+  font-size: var(--hero-title);
+  font-weight: var(--weight-medium);
+  line-height: 1.15;
+  letter-spacing: normal;
+  text-align: center;
+}
+
+/* Linha 2 */
+.hero__details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--hero-gap);
+  width: 100%;
+}
+
+.hero__credentials {
+  max-width: 18.9em; /* 378px na referência */
+  color: var(--color-ink);
+  font-size: var(--hero-lead);
+  font-weight: var(--weight-medium);
+  line-height: 1.3;
+  text-align: center;
+}
+
+.hero__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hero-gap-sm); /* HIG: ~12pt entre controles (Figma: 8px) */
+  width: 100%;
+}
+
+.hero__actions-row {
+  display: flex;
+  gap: var(--hero-gap-sm);
+}
+
+.hero__actions-row > .button {
+  flex: 1 1 0;
+}
+
+/* Botões em pílula, concêntricos com a base do card */
+.hero__actions .button {
+  min-height: 2.75em; /* 44px na referência (HIG) */
+  padding: 0.5em;
+  font-size: 1em;
+  border-radius: var(--radius-pill);
+}
+
+/* Desktop (card largo) */
+@container hero (min-width: 700px) {
+  /* Arco mais suave: a curva ocupa só a metade superior do card
+     (raio horizontal = metade da largura, vertical = metade da altura) */
+  .hero__card {
+    border-radius: 50% 50% var(--hero-radius-bottom) var(--hero-radius-bottom) / 50% 50% var(--hero-radius-bottom) var(--hero-radius-bottom);
+  }
+
+  .hero__title {
+    line-height: 1.1; /* Figma: 1.0 — HIG evita entrelinha apertada */
+  }
+
+  .hero__actions .button {
+    min-height: 2.45em; /* 44px com texto de 18px */
+    font-size: var(--hero-button);
+  }
+}
+
+/* Telas largas e baixas: a escala já está no mínimo legível, então só a
+   foto encolhe para o vídeo continuar aparecendo */
+@media (max-height: 700px) {
+  @container hero (min-width: 481px) {
+    .hero__card {
+      --hero-photo: 17em; /* 272px na referência */
+    }
+  }
+}
+
+/* Celular (card estreito): tamanhos fixos dos estilos de texto do iOS (HIG)
+   e foto ocupando toda a largura útil, concêntrica com o arco do topo
+   (círculo de diâmetro = largura − padding, encostado no padding). */
+@container hero (max-width: 480px) {
+  .hero__card {
+    gap: var(--space-3);
+    font-size: 1rem; /* escala de referência: padding 12px, nome 220px */
+  }
+
+  .hero__intro,
+  .hero__details {
+    gap: var(--space-3);
+  }
+
+  /* A foto ocupa o que sobra até 80% da tela: --hero-rest é a altura fixa
+     do resto (topo, logo, textos, botões e espaços). Mínimo de 200px. */
+  .hero__photo {
+    width: clamp(12.5rem, calc(80vh - var(--hero-rest)), 100%);
+    width: clamp(12.5rem, calc(80dvh - var(--hero-rest)), 100%);
+    padding: 11.6cqw 0; /* 40px em 344px */
+  }
+
+  /* Nome e subtítulo proporcionais ao círculo (220px e 15px em 344px) */
+  .hero__name-title {
+    width: 64cqw;
+  }
+
+  .hero__name-subtitle {
+    font-size: clamp(0.6875rem, 4.4cqw, var(--text-subhead)); /* 11–15px */
+  }
+
+  .hero__title {
+    max-width: none;
+    font-size: var(--text-title-2);
+    line-height: var(--leading-title-2);
+  }
+
+  .hero__credentials {
+    max-width: none;
+    font-size: var(--text-callout);
+    line-height: var(--leading-callout);
+  }
+
+  .hero__actions .button {
+    min-height: var(--tap-min);
+    font-size: var(--text-body);
+  }
+}
+
+/* Foto: leve aproximação ao passar o mouse */
+@media (hover: hover) {
+  .hero__photo > img {
+    transition: transform 600ms var(--ease);
+  }
+
+  .hero__photo:hover > img {
+    transform: scale(1.07);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Seção 2 — vídeo
+   Reprodução automática, muda e em loop, sem controles visíveis.
+   HIG: toque/clique pausa; respeita "Reduzir movimento"; pausa fora da tela.
+   -------------------------------------------------------------------------- */
+.feature {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.feature__media {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-media);
+}
+
+.feature__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* preenche sem distorcer */
+}
+
+/* Área de toque invisível sobre o vídeo */
+.feature__toggle {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: inherit;
+}
+
+.feature__toggle:focus-visible {
+  outline: 3px solid var(--color-white);
+  outline-offset: -6px;
+}
+
+.feature__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  padding: var(--space-6);
+  background: var(--gradient-video);
+  pointer-events: none;
+}
+
+.feature__title {
+  color: var(--color-white);
+  font-size: var(--text-video-title);
+  font-weight: var(--weight-medium);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.feature__text {
+  max-width: none;
+  color: var(--color-ink);
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-loose);
+}
+
+@media (max-width: 600px) {
+  .feature__media {
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-media-sm);
+  }
+
+  .feature__overlay {
+    padding: var(--space-5);
+    background: var(--gradient-video-compact);
+  }
+
+  .feature__title {
+    font-size: var(--text-video-title-sm);
+    line-height: 1.1; /* HIG: sem entrelinha apertada em várias linhas */
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Título de seção
+   -------------------------------------------------------------------------- */
+.section-title {
+  color: var(--color-ink);
+  font-size: var(--text-large-title);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-large-title);
+}
+
+/* --------------------------------------------------------------------------
+   Carrossel (seção 3 — casos, seção 6 — feedbacks e, abaixo de 900px,
+   seção 4 — procedimentos). Rolagem nativa (toque, trackpad, teclado) +
+   arraste com mouse (JS).
+   O primeiro card alinha com a margem do conteúdo; os demais vazam
+   até a borda da tela.
+   -------------------------------------------------------------------------- */
+.carousel-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.carousel {
+  --per-view: 3;
+  --gap: var(--space-4);
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.carousel__viewport {
+  --pad: max(var(--gutter), calc((100cqw - var(--content-max)) / 2));
+  --content-w: calc(100cqw - 2 * var(--pad));
+  overflow-x: auto;
+  overflow-y: hidden; /* só rolagem horizontal (a entrada dos cards não cria sobra vertical) */
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--pad);
+  padding-inline: var(--pad);
+  /* Folga embaixo para o card subir sem ser cortado pela borda do carrossel */
+  padding-bottom: var(--reveal-distance);
+  margin-bottom: calc(-1 * var(--reveal-distance));
+  scrollbar-width: none;
+}
+
+.carousel__viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel__viewport:focus-visible {
+  outline-offset: -3px;
+}
+
+/* Arraste com mouse */
+@media (pointer: fine) {
+  .carousel__viewport {
+    cursor: grab;
+  }
+}
+
+.carousel__viewport.is-dragging {
+  scroll-snap-type: none;
+  cursor: grabbing;
+  user-select: none;
+}
+
+.carousel__track {
+  display: flex;
+  gap: var(--gap);
+  width: max-content;
+  padding: 0;
+  list-style: none;
+}
+
+.carousel__track > li {
+  flex: none;
+  width: calc((var(--content-w) - (var(--per-view) - 1) * var(--gap)) / var(--per-view));
+  scroll-snap-align: start;
+}
+
+.case__media {
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  margin-bottom: var(--space-3);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-media-sm);
+}
+
+.case__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+.case__title {
+  color: var(--color-ink);
+  font-size: var(--text-title-3);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-title-3);
+  letter-spacing: -0.01em;
+}
+
+.case__meta {
+  color: var(--color-ink);
+  font-size: var(--text-subhead);
+  line-height: var(--leading-subhead);
+}
+
+/* Indicador de progresso: trilho fino + barra proporcional à área visível */
+.carousel__progress {
+  position: relative;
+  height: 3px;
+  overflow: hidden;
+  background-color: var(--color-track);
+  border-radius: var(--radius-pill);
+}
+
+.carousel__progress-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--thumb-size, 33%);
+  height: 100%;
+  background-color: var(--color-ink);
+  border-radius: inherit;
+  transform: translateX(var(--thumb-offset, 0px));
+  will-change: transform;
+}
+
+.carousel.is-static .carousel__progress {
+  visibility: hidden;
+}
+
+.carousel.is-static .carousel__viewport {
+  cursor: auto;
+}
+
+@media (max-width: 899px) {
+  .carousel { --per-view: 2; }
+}
+
+@media (max-width: 600px) {
+  .carousel {
+    --per-view: 1.2; /* próximo card aparece parcialmente: indica rolagem */
+    --gap: var(--space-3);
+  }
+}
+
+/* Carrossel compacto (feedbacks): mais cards por vez */
+.carousel.carousel--compact { --per-view: 4; }
+
+@media (max-width: 899px) {
+  .carousel.carousel--compact { --per-view: 2.3; }
+}
+
+@media (max-width: 600px) {
+  .carousel.carousel--compact { --per-view: 1.2; }
+}
+
+/* --------------------------------------------------------------------------
+   Seção 4 — procedimentos
+   Cada item abre uma descrição curta (HIG: progressive disclosure) com
+   <details> nativo: teclado e leitores de tela funcionam sem JavaScript.
+   -------------------------------------------------------------------------- */
+.procedures {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.procedures__head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  text-align: center;
+}
+
+.procedures__title {
+  color: var(--color-gold-text);
+}
+
+.procedures__intro {
+  max-width: none;
+  color: var(--color-ink);
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-loose);
+}
+
+/* Abaixo de 900px: carrossel como os demais (cards com a mesma altura).
+   A partir de 900px: grade de 3 colunas, cards alinhados pelo topo. */
+.procedures__card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--card-padding);
+  background-color: var(--color-card);
+  border: 1px solid var(--color-button-border);
+  border-radius: var(--radius-media);
+}
+
+.procedures__card-title {
+  color: var(--color-gold-text);
+  font-size: var(--text-title-2);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-title-2);
+  letter-spacing: normal;
+}
+
+.procedures__list {
+  padding: 0;
+  list-style: none;
+}
+
+.procedures__list > li + li {
+  border-top: 1px solid var(--color-separator);
+}
+
+.procedure__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: var(--tap-min);
+  color: var(--color-ink);
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-body);
+  list-style: none;
+  cursor: pointer;
+}
+
+.procedure__summary::-webkit-details-marker {
+  display: none;
+}
+
+.procedure__icon {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  transition: transform var(--duration) var(--ease);
+}
+
+/* Aberto: o + gira e vira × */
+.procedure[open] .procedure__icon {
+  transform: rotate(45deg);
+}
+
+.procedure__description {
+  padding-bottom: var(--space-3);
+  color: var(--color-gold-text);
+  font-size: var(--text-subhead);
+  line-height: var(--leading-subhead);
+}
+
+/* Celular: cabeçalho alinhado à esquerda, como as demais seções */
+@media (max-width: 600px) {
+  .procedures__head {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+}
+
+@media (min-width: 900px) {
+  .carousel--grid .carousel__track {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+    width: auto;
+    gap: var(--space-3);
+  }
+
+  .carousel--grid .carousel__track > li {
+    width: auto;
+  }
+
+  .carousel--grid .procedures__card {
+    height: auto;
+  }
+
+  /* Títulos reservam 2 linhas para alinhar os itens entre os cards */
+  .procedures__card-title {
+    min-height: 2lh;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Seção 5 — experiência de atendimento (etapas numeradas)
+   Lista ordenada semântica; o número vem de um contador CSS.
+   Duas colunas em telas largas encurtam as linhas (melhor leitura).
+   -------------------------------------------------------------------------- */
+.journey {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.journey__title {
+  color: var(--color-gold-text);
+  text-align: center;
+}
+
+.journey__steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: var(--space-4);
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.journey__step {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    "number title"
+    "number text";
+  align-content: start;
+  column-gap: var(--space-2);
+  row-gap: var(--space-2);
+  padding: var(--card-padding);
+  background-color: var(--color-card);
+  border: 1px solid var(--color-button-border);
+  border-radius: var(--radius-tile);
+  counter-increment: step;
+}
+
+.journey__step::before {
+  content: counter(step) ".";
+  grid-area: number;
+  min-width: 1.3em; /* mesma coluna para 1–4: títulos e textos alinhados */
+  font-variant-numeric: tabular-nums;
+}
+
+.journey__step::before,
+.journey__step-title {
+  color: var(--color-gold-text);
+  font-size: var(--text-title-2);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-title-2);
+  letter-spacing: normal;
+}
+
+.journey__step-title {
+  grid-area: title;
+}
+
+.journey__step-text {
+  grid-area: text;
+  max-width: none;
+  color: var(--color-ink);
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-body);
+}
+
+/* Celular: título alinhado à esquerda e texto na largura toda do card */
+@media (max-width: 600px) {
+  .journey__title {
+    text-align: left;
+  }
+
+  .journey__step {
+    grid-template-areas:
+      "number title"
+      "text   text";
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Seção 6 — feedbacks
+   Card externo e balão interno concêntricos: 20px − 8px de padding = 12px.
+   -------------------------------------------------------------------------- */
+.feedback {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  height: 100%;
+  padding: var(--space-2);
+  background-color: var(--color-card);
+  border: 1px solid var(--color-button-border);
+  border-radius: var(--radius-media-sm);
+}
+
+.feedback__author {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    "avatar name"
+    "avatar role";
+  align-items: center;
+  column-gap: var(--space-2);
+  padding: var(--space-1) var(--space-1) 0;
+}
+
+.feedback__avatar {
+  grid-area: avatar;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  object-fit: cover;
+  background-color: var(--color-track);
+  border-radius: 50%;
+  color: var(--color-gold-text);
+  font-size: var(--text-subhead);
+  font-weight: var(--weight-semibold);
+}
+
+.feedback__name {
+  grid-area: name;
+  align-self: end;
+  color: var(--color-ink);
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-body);
+}
+
+.feedback__role {
+  grid-area: role;
+  align-self: start;
+  color: var(--color-gold-text);
+  font-size: var(--text-subhead);
+  line-height: var(--leading-subhead);
+}
+
+.feedback__message {
+  flex: 1;
+  padding: var(--space-3);
+  background-color: var(--color-button);
+  border: 1px solid var(--color-separator);
+  border-radius: var(--radius-md);
+}
+
+.feedback__message p {
+  max-width: none;
+  color: var(--color-text);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+}
+
+/* --------------------------------------------------------------------------
+   Animação de entrada dos cards: sobem e aparecem ao entrar na tela (JS).
+   Sem JavaScript ou com "Reduzir movimento", os cards ficam visíveis.
+   -------------------------------------------------------------------------- */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(var(--reveal-distance));
+  transition: opacity var(--reveal-duration) var(--ease-out),
+              transform var(--reveal-duration) var(--ease-out);
+}
+
+.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Seção 7 — encerramento
+   -------------------------------------------------------------------------- */
+.closing__frame {
+  container: closing / inline-size;
+}
+
+.closing__card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-7) var(--space-5) var(--space-6);
+  text-align: center;
+}
+
+.closing__title {
+  color: var(--color-gold-text);
+}
+
+.closing__text {
+  max-width: 34em;
+  color: var(--color-ink);
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-loose);
+}
+
+/* Botões com a mesma largura */
+.closing__actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  width: min(100%, 40rem);
+}
+
+.closing__actions .button {
+  min-height: var(--tap-min);
+  padding-inline: var(--space-4);
+  font-size: var(--text-body);
+  border-radius: var(--radius-pill);
+}
+
+/* Celular: botões empilhados */
+@container closing (max-width: 480px) {
+  .closing__actions {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Rodapé
+   Duas colunas com o mesmo corpo (Subheadline 15px) e a mesma altura de
+   linha; links com área de toque de 44px só em telas de toque (HIG).
+   Linha final em Footnote, separada por um divisor.
+   -------------------------------------------------------------------------- */
+.site-footer {
+  padding-block: var(--space-6);
+  border-top: 1px solid var(--color-separator);
+  color: var(--color-text-secondary);
+  font-size: var(--text-subhead);
+  line-height: var(--leading-subhead);
+}
+
+.site-footer__inner {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  gap: var(--space-5);
+}
+
+.site-footer__name {
+  color: var(--color-ink);
+  font-weight: var(--weight-semibold);
+}
+
+.site-footer__contacts {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0;
+  list-style: none;
+}
+
+.site-footer__contacts li {
+  display: flex;
+}
+
+.site-footer__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-ink);
+  transition: color var(--duration) var(--ease);
+}
+
+.site-footer__icon {
+  width: 17px;
+  height: 17px;
+  color: var(--color-gold-text);
+}
+
+.site-footer__link:hover,
+.site-footer__credit:hover {
+  color: var(--color-text);
+}
+
+.site-footer__bottom {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-5);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-separator);
+  font-size: var(--text-footnote);
+  line-height: var(--leading-footnote);
+}
+
+.site-footer__credit {
+  color: var(--color-ink);
+  font-weight: var(--weight-medium);
+  transition: color var(--duration) var(--ease);
+}
+
+@media (pointer: coarse) {
+  .site-footer__link {
+    min-height: var(--tap-min);
+  }
+}
+
+@media (max-width: 600px) {
+  .site-footer__inner {
+    grid-template-columns: 1fr;
+  }
+
+  .site-footer__bottom {
+    flex-direction: column;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Movimento reduzido (HIG: Motion / Accessibility)
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
