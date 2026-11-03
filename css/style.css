@@ -174,21 +174,6 @@
   }
 }
 
-/* Celular baixo (ex.: iPhone SE): o logo do topo sai (o símbolo continua na
-   barra de navegação) e o espaço vai para a foto e para o vídeo aparecer */
-@media (max-width: 600px) and (max-height: 700px) {
-  :root {
-    --logo-h: 0px;
-  }
-
-  .hero__logo {
-    display: none;
-  }
-
-  .hero {
-    gap: 0;
-  }
-}
 
 /* --------------------------------------------------------------------------
    Reset e base
@@ -325,13 +310,28 @@ a {
   left: var(--header-inset);
   right: var(--header-inset);
   z-index: 50;
-  background-color: var(--color-header-bg);
-  -webkit-backdrop-filter: saturate(160%) blur(10px); /* = --header-material: o Safari ignora var() aqui */
-  backdrop-filter: var(--header-material);
   border: 1px solid var(--color-header-border);
   border-radius: var(--radius-island);
   transition: opacity var(--duration) var(--ease),
               transform var(--duration) var(--ease);
+}
+
+/* Material translúcido (barra e menu aberto). Fica num pseudo-elemento:
+   desfoque aplicado na própria barra impediria o menu, que está dentro
+   dela, de desfocar o conteúdo da página. */
+.site-header::before,
+.site-nav__list {
+  background-color: var(--color-header-bg);
+  -webkit-backdrop-filter: saturate(160%) blur(10px); /* = --header-material: o Safari ignora var() aqui */
+  backdrop-filter: var(--header-material);
+}
+
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
 }
 
 .site-header.is-hidden:not(:focus-within) {
@@ -353,6 +353,9 @@ a {
   padding-inline: calc(var(--gutter) - var(--island-offset));
 }
 
+/* Entrelinhas calculadas pelas métricas da Inter Tight: o topo das
+   maiúsculas do nome e a linha de base da especialidade coincidem com o
+   topo e a base do símbolo (26px). */
 .site-logo {
   display: inline-flex;
   align-items: center;
@@ -360,13 +363,13 @@ a {
   min-height: var(--tap-min);
   color: var(--color-text);
   font-size: var(--text-subhead);
-  line-height: var(--leading-subhead);
+  line-height: 1.15;
 }
 
 .site-logo__symbol {
   flex: none;
   width: auto;
-  height: 24px;
+  height: 26px;
   color: var(--color-gold);
 }
 
@@ -384,7 +387,7 @@ a {
   color: var(--color-text-secondary);
   font-size: var(--text-caption);
   font-weight: var(--weight-regular);
-  line-height: 1.333; /* 16/12 */
+  line-height: 1.25;
 }
 
 .site-nav__list {
@@ -392,6 +395,14 @@ a {
   gap: var(--space-2);
   padding: 0;
   list-style: none;
+}
+
+@media (min-width: 721px) {
+  .site-nav__list {
+    background: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
 }
 
 .site-nav__link {
@@ -482,9 +493,6 @@ a {
     flex-direction: column;
     gap: 0;
     padding: var(--space-2) calc(var(--gutter) - var(--header-inset));
-    background-color: var(--color-header-bg);
-    -webkit-backdrop-filter: saturate(160%) blur(10px); /* = --header-material: o Safari ignora var() aqui */
-    backdrop-filter: var(--header-material);
     border: 1px solid var(--color-header-border);
     border-radius: var(--radius-island);
   }
@@ -515,16 +523,33 @@ main:not(:has(.hero)) {
   padding-top: calc(var(--header-h) + var(--header-inset) + var(--section-gap));
 }
 
-/* Celular: a barra fica sempre visível, também na página inicial */
+/* Celular: barra na borda inferior, ao alcance do polegar. O menu abre
+   para cima e a página ganha folga embaixo para o rodapé não ficar coberto. */
 @media (max-width: 600px) {
-  .site-header.is-hidden:not(:focus-within) {
-    opacity: 1;
-    transform: none;
-    pointer-events: auto;
+  html {
+    scroll-padding-top: var(--header-inset);
   }
 
-  main {
-    padding-top: calc(var(--header-h) + var(--header-inset) + var(--section-gap));
+  body {
+    padding-bottom: calc(var(--header-h) + 2 * var(--header-inset));
+  }
+
+  .site-header {
+    top: auto;
+    bottom: calc(var(--header-inset) + env(safe-area-inset-bottom, 0px));
+  }
+
+  .site-header.is-hidden:not(:focus-within) {
+    transform: translateY(100%);
+  }
+
+  .site-nav__list {
+    top: auto;
+    bottom: calc(100% + var(--header-inset));
+  }
+
+  main:not(:has(.hero)) {
+    padding-top: var(--section-gap);
   }
 }
 
