@@ -15,4 +15,5 @@ rsync -a --delete \
   --exclude='node_modules/' \
   --exclude='wrangler.jsonc' \
   --exclude='build.sh' \
+  --exclude='MANUTENCAO.md' \
   ./ dist/
