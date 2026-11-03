@@ -12,7 +12,9 @@ if (header && heroLogo) {
   let ticking = false;
   const updateHeader = () => {
     ticking = false;
-    const pastLogo = heroLogo.getBoundingClientRect().bottom < 0;
+    // Logo escondido (celular baixo): a barra aparece assim que a página rola
+    const logo = heroLogo.getBoundingClientRect();
+    const pastLogo = logo.height === 0 ? window.scrollY > 0 : logo.bottom < 0;
     header.classList.toggle("is-hidden", !pastLogo);
   };
   window.addEventListener("scroll", () => {

@@ -326,7 +326,7 @@ a {
   right: var(--header-inset);
   z-index: 50;
   background-color: var(--color-header-bg);
-  -webkit-backdrop-filter: var(--header-material);
+  -webkit-backdrop-filter: saturate(160%) blur(10px); /* = --header-material: o Safari ignora var() aqui */
   backdrop-filter: var(--header-material);
   border: 1px solid var(--color-header-border);
   border-radius: var(--radius-island);
@@ -370,31 +370,21 @@ a {
   color: var(--color-gold);
 }
 
+/* Nome e especialidade em duas linhas */
+.site-logo__text {
+  display: flex;
+  flex-direction: column;
+}
+
 .site-logo__name {
   font-weight: var(--weight-semibold);
 }
 
-.site-logo__separator,
 .site-logo__tagline {
   color: var(--color-text-secondary);
+  font-size: var(--text-caption);
   font-weight: var(--weight-regular);
-}
-
-/* Celular: nome e especialidade em duas linhas */
-@media (max-width: 600px) {
-  .site-logo__text {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .site-logo__separator {
-    display: none;
-  }
-
-  .site-logo__tagline {
-    font-size: var(--text-caption);
-    line-height: 1.333; /* 16/12 */
-  }
+  line-height: 1.333; /* 16/12 */
 }
 
 .site-nav__list {
@@ -493,7 +483,7 @@ a {
     gap: 0;
     padding: var(--space-2) calc(var(--gutter) - var(--header-inset));
     background-color: var(--color-header-bg);
-    -webkit-backdrop-filter: var(--header-material);
+    -webkit-backdrop-filter: saturate(160%) blur(10px); /* = --header-material: o Safari ignora var() aqui */
     backdrop-filter: var(--header-material);
     border: 1px solid var(--color-header-border);
     border-radius: var(--radius-island);
