@@ -542,36 +542,6 @@ main:not(:has(.hero)) {
   padding-top: calc(var(--header-h) + var(--header-inset) + var(--section-gap));
 }
 
-/* Celular: barra na borda inferior, ao alcance do polegar. O menu abre
-   para cima e a página ganha folga embaixo para o rodapé não ficar coberto. */
-@media (max-width: 600px) {
-  html {
-    scroll-padding-top: var(--header-inset);
-  }
-
-  body {
-    padding-bottom: calc(var(--header-h) + 2 * var(--header-inset));
-  }
-
-  .site-header {
-    top: auto;
-    bottom: calc(var(--header-inset) + env(safe-area-inset-bottom, 0px));
-  }
-
-  .site-header.is-hidden:not(:focus-within) {
-    transform: translateY(100%);
-  }
-
-  .site-nav__list {
-    top: auto;
-    bottom: calc(100% + var(--header-inset));
-  }
-
-  main:not(:has(.hero)) {
-    padding-top: var(--section-gap);
-  }
-}
-
 /* --------------------------------------------------------------------------
    Botão
    -------------------------------------------------------------------------- */
