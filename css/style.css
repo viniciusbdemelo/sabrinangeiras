@@ -247,7 +247,7 @@ h2,
 h3,
 h4 {
   font-weight: var(--weight-semibold);
-  line-height: 1.15;
+  line-height: 1.0;
   letter-spacing: -0.02em;
   text-wrap: balance;
 }
@@ -730,7 +730,8 @@ main:not(:has(.hero)) {
 }
 
 .hero__credentials {
-  max-width: 18.9em; /* 378px na referência */
+  max-width: 340px; /* 378px na referência */
+  min-width: 320px;
   color: var(--color-ink);
   font-size: var(--hero-lead);
   font-weight: var(--weight-medium);
@@ -1451,6 +1452,7 @@ main:not(:has(.hero)) {
 @media (max-width: 600px) {
   .closing__card {
     align-items: flex-start;
+    padding-inline: 0;
     text-align: left;
   }
 }
