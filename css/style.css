@@ -525,6 +525,19 @@ main:not(:has(.hero)) {
   padding-top: calc(var(--header-h) + var(--header-inset) + var(--section-gap));
 }
 
+/* Celular: a barra fica sempre visível, também na página inicial */
+@media (max-width: 600px) {
+  .site-header.is-hidden:not(:focus-within) {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  main {
+    padding-top: calc(var(--header-h) + var(--header-inset) + var(--section-gap));
+  }
+}
+
 /* --------------------------------------------------------------------------
    Botão
    -------------------------------------------------------------------------- */
